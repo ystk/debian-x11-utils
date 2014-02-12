@@ -1,3 +1,294 @@
+commit 02376118fb58c05067054be3f2e469f461f81757
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Fri Oct 21 21:34:32 2011 -0700
+
+    xdpyinfo 1.3.0
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 0b97213aa640aa6a05b9cb298349e45403bf7958
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Wed Sep 28 20:52:30 2011 -0700
+
+    Silence gcc complaint about being unable to check printf format string
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 1ac4dd6c7abe6fe185c0dafb3bb592720128a737
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Wed Sep 28 20:50:02 2011 -0700
+
+    Remove unused function hasExtension
+    
+    Leftover from the Xprint code removed in commit 889264a52a6cf988
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 24c9341f0e7b0fb7aee326a72982e59e535055e1
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Wed Sep 28 20:48:58 2011 -0700
+
+    Add const attributes to fix gcc -Wwrite-strings warnings
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 794e32074cbf13434375afe62b86b57f266a749f
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Wed Sep 28 20:41:57 2011 -0700
+
+    Strip trailing whitespace
+    
+    Performed with: find * -type f | xargs perl -i -p -e 's{[ \t]+$}{}'
+    git diff -w & git diff -b show no diffs from this change
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit c80c86499b3e47bcba68960bcba1bd33d9394fc5
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Jan 19 10:06:56 2011 -0500
+
+    config: move man pages into their own directory
+    
+    Use services provided by XORG_MANPAGE_SECTIONS.
+    Use standard Makefile for man pages.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 9ea60417e477a333ff0fb6074032e8e7006c7f5b
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Thu Jan 13 11:15:47 2011 -0500
+
+    man: remove trailing spaces and tabs
+    
+    Using s/[ \t]*$//
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 7cccede7fbe736b40c7de56d1e3304cad61489a3
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Jan 12 16:28:02 2011 -0500
+
+    config: replace deprecated AM_CONFIG_HEADER with AC_CONFIG_HEADERS
+    
+    This silences an Autoconf warning
+
+commit e95f61e453354b0f31d18cc873a4be8b1911b098
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Jan 12 15:29:50 2011 -0500
+
+    config: replace deprecated AC_HELP_STRING with AS_HELP_STRING
+    
+    This silences an Automake warning.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 7807192aa448d57ad8d903c445a7ba91c917b8d6
+Author: Jesse Adkins <jesserayadkins@gmail.com>
+Date:   Tue Sep 28 13:29:49 2010 -0700
+
+    Purge cvs tags.
+    
+    Signed-off-by: Jesse Adkins <jesserayadkins@gmail.com>
+
+commit 072fc46b2af370e78fa53426626ca3c33b74bdf2
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Sun Oct 3 11:47:07 2010 -0700
+
+    Use xcb for -queryExt instead of a round-trip per extension
+    
+    On a system with 30 extensions listed by xdpyinfo, truss -c
+    reports this saves quite a few system calls by batching the
+    QueryExtension requests instead of a round-trip for each one:
+    
+                          Xlib      xcb
+    writev                  40       11
+    poll                    80       22
+    recv                   117       29
+    total (*)              464      296
+    
+    (*) total includes all system calls, including many not shown since
+    their count did not change significantly.   There was one additional
+    set of open/mmap/close etc. for loading the added libX11-xcb library.
+    
+    Over a tcp connection, this reduced both the number of packets,
+    and due to tcp packet header overhead, the overall amount of data:
+    
+                          Xlib      xcb
+    TCP packets             93       35
+    TCP bytes            11554     7726
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+    Reviewed-by: Jamey Sharp <jamey@minilop.net>
+
+commit 30bc4b0ada659809c64f6a8292cbde3166267e8d
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Sun Oct 3 10:51:09 2010 -0700
+
+    xdpyinfo 1.2.0
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 8f12197ace824fb47fe72725e46ff5f9ba44c39e
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Sun Oct 3 10:45:43 2010 -0700
+
+    Remove DPY_XPRINT_* from Makefile.am
+    
+    The definitions were removed from configure.ac by commit e4541a92f7faead53
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 6932cb0e96de5e17fb637794575a9b89b65db276
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Thu Sep 23 20:06:19 2010 -0700
+
+    config: Remove unnecessary calls from configure.ac
+    
+    AC_PROG_CC & AC_PROG_INSTALL are provided by XORG_DEFAULT_OPTIONS now
+    PKG_CONFIG_MODULES handles AC_SUBST of the CFLAGS & LIBS variables
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit b9263245f854ef292ce2e60a324ba1d056c3222d
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Thu Sep 23 20:04:53 2010 -0700
+
+    config: upgrade to util-macros 1.8 for additional man page support
+    
+    Use MAN_SUBST now supplied in XORG_MANPAGE_SECTIONS
+    The value of MAN_SUBST is the same for all X.Org packages.
+    
+    Use AC_PROG_SED now supplied by XORG_DEFAULT_OPTIONS
+    The existing statement can now be removed from the configuration file.
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit b54bc557a3a3ba87d32e330517b17fb3bbd6cd70
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Tue Jul 20 18:45:18 2010 -0400
+
+    config: update AC_PREREQ statement to 2.60
+    
+    Unrelated to the previous patches, the new value simply reflects
+    the reality that the minimum level for autoconf to configure
+    all x.org modules is 2.60 dated June 2006.
+    
+    ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.60.tar.gz
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit d3487b3fd52c1361e689d28fd8fb6f6d7140825b
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Mar 26 19:23:35 2010 -0400
+
+    xprint: remove isPrintScreen code
+    
+    The if (isPrintScreen) always evaluate to false
+    
+    Reviewed-by: Jeremy Huddleston <jeremyhu@freedesktop.org>
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 889264a52a6cf9882b010de55d555c877dd216f3
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Mar 26 19:20:56 2010 -0400
+
+    xprint: remove conditional code regarding xprint feature
+    
+    xprint has been removed from X Window System
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit e4541a92f7faead53fe855e5be5d8318b636827b
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Mar 26 19:20:10 2010 -0400
+
+    config: remove xprint feature which is obsolete
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit f0b2eed8b9447038d6cf9d0d33be902398da2ca2
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Thu Jan 7 21:38:31 2010 -0500
+
+    COPYING: replace stub with actual copyright notice
+    
+    Refer to xdpyinfo.c
+    Copyright 1988, 1998  The Open Group
+    Copyright 2005 Hitachi, Ltd.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 4e3962ab551368c1c959ecf78b3c6cfd03cd0763
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Thu Nov 26 09:19:53 2009 -0500
+
+    Makefile.am: add ChangeLog and INSTALL on MAINTAINERCLEANFILES
+    
+    Now that the INSTALL file is generated.
+    Allows running make maintainer-clean.
+
+commit c4367264ce11abfbe64e92ab6b0807b6213ff56f
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Oct 28 14:09:08 2009 -0400
+
+    INSTALL, NEWS, README or AUTHORS files are missing/incorrect #24206
+    
+    Add missing INSTALL file. Use standard GNU file on building tarball
+    README may have been updated
+    Remove AUTHORS file as it is empty and no content available yet.
+    Remove NEWS file as it is empty and no content available yet.
+
+commit c2fbd90b15cf45e2b0c5649bc575d04d09ce6f30
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Tue Oct 27 15:07:24 2009 -0400
+
+    Deploy the new XORG_DEFAULT_OPTIONS #24242
+    
+    This macro aggregate a number of existing macros that sets commmon
+    X.Org components configuration options. It shields the configuration file from
+    future changes.
+
+commit 6510da8afa850a92666a5377aa2642646c6ab4f1
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Mon Oct 26 22:08:38 2009 -0400
+
+    Makefile.am: ChangeLog not required: EXTRA_DIST or *CLEANFILES #24432
+    
+    ChangeLog filename is known to Automake and requires no further
+    coding in the makefile.
+
+commit 92f55dcd3aa216ecd861b91c22c617972aaeb4de
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Thu Oct 22 12:34:15 2009 -0400
+
+    .gitignore: use common defaults with custom section # 24239
+    
+    Using common defaults will reduce errors and maintenance.
+    Only the very small or inexistent custom section need periodic maintenance
+    when the structure of the component changes. Do not edit defaults.
+
+commit c991ae4f86a1abb99f3f0c38b10c922a0d5b63e8
+Author: Jeremy Huddleston <jeremyhu@freedesktop.org>
+Date:   Wed Oct 21 12:47:20 2009 -0700
+
+    This is not a GNU project, so declare it foreign.
+    
+    On Wed, 2009-10-21 at 13:36 +1000, Peter Hutterer wrote:
+    > On Tue, Oct 20, 2009 at 08:23:55PM -0700, Jeremy Huddleston wrote:
+    > > I noticed an INSTALL file in xlsclients and libXvMC today, and it
+    > > was quite annoying to work around since 'autoreconf -fvi' replaces
+    > > it and git wants to commit it.  Should these files even be in git?
+    > > Can I nuke them for the betterment of humanity and since they get
+    > > created by autoreconf anyways?
+    >
+    > See https://bugs.freedesktop.org/show_bug.cgi?id=24206
+    
+    As an interim measure, replace AM_INIT_AUTOMAKE([dist-bzip2]) with
+    AM_INIT_AUTOMAKE([foreign dist-bzip2]). This will prevent the generation
+    of the INSTALL file. It is also part of the 24206 solution.
+    
+    Signed-off-by: Jeremy Huddleston <jeremyhu@freedesktop.org>
+
 commit a02c4aad3cbe284630de60f6de9c1bfc3dd6a853
 Author: Alan Coopersmith <alan.coopersmith@sun.com>
 Date:   Fri Oct 16 16:07:10 2009 -0700

@@ -1,3 +1,100 @@
+x11-utils (7.7~1) unstable; urgency=low
+
+  [ Robert Hooker ]
+  * listres 1.0.3
+  * luit 1.1.1
+  * xdpyinfo 1.3.0
+  * xev 1.2.0
+  * xfd 1.1.1
+  * xfontsel 1.0.4
+  * xlsatoms 1.1.1
+  * Build with --disable-selective-werror to work around build problems
+    caused by excessive -Werror's set in new xutils-dev.
+
+  [ Julien Cristau ]
+  * xlsfonts 1.0.4
+  * Update build-deps for new releases.
+  * Don't use dh_testroot in debian/rules clean.
+
+ -- Julien Cristau <jcristau@debian.org>  Mon, 30 Apr 2012 19:32:53 +0200
+
+x11-utils (7.6+4) unstable; urgency=low
+
+  * Mark x11-utils Multi-Arch: foreign.
+
+ -- Steve Langasek <vorlon@debian.org>  Thu, 20 Oct 2011 23:02:31 -0700
+
+x11-utils (7.6+3) unstable; urgency=low
+
+  * xprop 1.2.1
+  * xwininfo 1.1.2
+  * Bump Standards-Version to 3.9.2 (no changes).
+
+ -- Cyril Brulebois <kibi@debian.org>  Thu, 30 Jun 2011 15:17:02 +0200
+
+x11-utils (7.6+2) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * xlsclients 1.1.2.  
+  * Drop build-dep on libxcb-atom1-dev.
+
+  [ Cyril Brulebois ]
+  * Remove cpp from x11-utils dependencies (Closes: #623815). Thanks to
+    Hilmar Preusse for the notice.
+  * Get rid of Conflicts and Replaces, all those packages are long gone.
+  * Wrap Depends and Suggests.
+
+ -- Arnaud Fontaine <arnau@debian.org>  Tue, 03 May 2011 22:03:04 +0900
+
+x11-utils (7.6+1) unstable; urgency=low
+
+  * Remove David Nusinow and Brice Goglin from Uploaders.  Thanks for your
+    work!
+  * Drop Pre-Depends on x11-common.
+  * Bump Standards-Version to 3.9.1.
+  * Upload to unstable.
+
+ -- Julien Cristau <jcristau@debian.org>  Wed, 09 Feb 2011 20:34:01 +0100
+
+x11-utils (7.6~1) experimental; urgency=low
+
+  [ Robert Hooker ]
+  * Add libxcomposite-dev to the build deps to enable Composite support
+    for xdpyinfo.
+
+  [ Cyril Brulebois ]
+  * New upstream release candidate: X11R7.6 RC1.
+  * Add xutils-dev build-dep for new macros.
+  * appres 1.0.3
+  * editres 1.0.5
+  * luit 1.1.0
+  * viewres 1.0.3
+  * xdpyinfo 1.2.0
+  * xdriinfo 1.0.4
+  * xev 1.1.0
+  * xfd 1.1.0
+  * Add gettext build-dep accordingly.
+  * xfontsel 1.0.3
+  * xkill 1.0.3
+  * xlsclients 1.1.1
+  * xprop 1.2.0
+  * xvinfo 1.1.1
+  * xwininfo 1.1.1
+  * Add x11proto-core-dev build-dep accordingly.
+  * Add libxcb-shape0-dev build-dep accordingly.
+  * Bump lixcb1-dev build-dep accordingly.
+  * Add an update-copyright target to refresh debian/copyright using
+    upstream's COPYING files, thanks to Julien Cristau.
+  * Refresh debian/copyright accordingly.
+  * Stop passing --disable-xprint, it's gone.
+  * Stop passing RSH=rsh, not used anymore.
+  * Stop passing MANCONF="/etc/manpath.config", that was for xman, which
+    is now in x11-apps.
+  * Switch from --list-missing to --fail-missing for additional safety.
+  * Add myself to Uploaders.
+
+ -- Cyril Brulebois <kibi@debian.org>  Fri, 12 Nov 2010 23:21:32 +0100
+
 x11-utils (7.5+4) unstable; urgency=low
 
   * xlsatoms 1.1.0: uses libxcb instead of Xlib for lower latency.

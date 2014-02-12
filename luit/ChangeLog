@@ -1,3 +1,247 @@
+commit 9baee90bb4a81d439a7e2de13de190bf65936b4c
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Thu Mar 22 21:22:57 2012 -0700
+
+    luit 1.1.1
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit ca55f514b6ee55c4ab6880bfa47d1c36967bd106
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Fri Feb 10 19:47:37 2012 -0800
+
+    Add additional printf & noreturn attributes suggested by gcc warnings
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 75de0f3d8b7bd9541a8a9528ab63e51fa9c57b17
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Mon Dec 5 20:47:09 2011 -0800
+
+    Fix memory leak on failure in getFontencCharset
+    
+    Error: Memory leak (CWE 401)
+       Memory leak of pointer 'c' allocated with malloc(80)
+            at line 297 of app/luit/charset.c in function 'getFontencCharset'.
+              'c' allocated at line 290 with malloc(80).
+            at line 303 of app/luit/charset.c in function 'getFontencCharset'.
+              'c' allocated at line 290 with malloc(80).
+    
+    [ This bug was found by the Parfait 0.4.2 bug checking tool.
+      For more information see http://labs.oracle.com/projects/parfait/ ]
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 525785fd7beca872ebeeb8bb6c22d82459128788
+Author: Ed Schouten <ed@80386.nl>
+Date:   Wed Oct 12 20:53:21 2011 +0200
+
+    Add support for posix_openpt().
+    
+    Instead of opening /dev/ptmx directly, we should use the proper
+    posix_openpt() function to obtain a pseudo-terminal. Some operating
+    systems, such as FreeBSD 8 and later, implement pseudo-terminal master
+    device nodes as a special file descriptor type, like sockets. They do
+    not support creation of pseudo-terminals through /dev/ptmx.
+    
+    Signed-off-by: Ed Schouten <ed@80386.nl>
+    Reviewed-by: Guillem Jover <guillem@hadrons.org>
+    Reviewed-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 82bec8b84d90d37f75f10b3abe9ec34a3415a622
+Author: Jeremy Huddleston <jeremyhu@apple.com>
+Date:   Thu Oct 6 10:50:54 2011 -0700
+
+    Fix ifdef-foo for the BSDs which are still living in the 90s
+    
+    NetBSD and FreeBSD still don't _POSIX_SAVED_IDS
+    
+    https://bugs.freedesktop.org/show_bug.cgi?id=41513
+    
+    Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+
+commit 290c32fb19d901306c4da1119a679112490cb838
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Mon Aug 15 21:29:51 2011 -0700
+
+    Remove check for zlib in configure script
+    
+    If libfontenc needs it, it will either be linked with it or
+    provide -lz in its pkg-config library requirements.
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+    Reviewed-by: Dan Nicholson <dbn.lists@gmail.com>
+
+commit 84ce81476ac32a9c79935e9666ee96d38d7ed600
+Author: Jeremy Huddleston <jeremyhu@apple.com>
+Date:   Fri May 6 18:30:26 2011 -0700
+
+    Mark FatalError _X_NORETURN
+    
+    This removes a false-positive from static analysis results.
+    
+    Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+
+commit 7e7820d859a779efcf9e7824d6cc6df4c0d325a7
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Tue Jan 25 08:20:08 2011 -0800
+
+    man: Use \fI & \fR instead of .I for strings longer than Solaris can handle
+    
+    The nroff .I macro on Solaris was truncating these strings when
+    displayed using the "man" command
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 94292b07a6072b590e000b3ab4f9a261dd21d492
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Jan 12 16:28:02 2011 -0500
+
+    config: replace deprecated AM_CONFIG_HEADER with AC_CONFIG_HEADERS
+    
+    This silences an Autoconf warning
+
+commit 49e8ed96ee1316e07b45c5784fd2ae8e1ebf9e6d
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Wed Jan 12 15:29:49 2011 -0500
+
+    config: replace deprecated AC_HELP_STRING with AS_HELP_STRING
+    
+    This silences an Automake warning.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit e1064d9bffdc77f12fc3907b2709ded6310db3f5
+Author: Jesse Adkins <jesserayadkins@gmail.com>
+Date:   Tue Sep 28 13:29:49 2010 -0700
+
+    Purge cvs tags.
+    
+    Signed-off-by: Jesse Adkins <jesserayadkins@gmail.com>
+
+commit f44baa7b690f04a0b4ebbaf0c43284b9798ac7d7
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Wed Oct 6 19:04:40 2010 -0700
+
+    luit 1.1.0
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit ed3908570e961d566ff13d8b38c2fa9efa2047ff
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Sun Sep 26 17:35:31 2010 -0700
+
+    config: Remove unnecessary calls from configure.ac
+    
+    AC_PROG_CC & AC_PROG_INSTALL are provided by XORG_DEFAULT_OPTIONS now
+    PKG_CONFIG_MODULES handles AC_SUBST of the CFLAGS & LIBS variables
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 0d7ea51f819d1e85909a3ec3fb637e3b4d703095
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Tue Jul 20 18:45:18 2010 -0400
+
+    config: update AC_PREREQ statement to 2.60
+    
+    Unrelated to the previous patches, the new value simply reflects
+    the reality that the minimum level for autoconf to configure
+    all x.org modules is 2.60 dated June 2006.
+    
+    ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.60.tar.gz
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 9a44a8c2310202bc5a62394d15fd70000ebe66bf
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 16:22:17 2010 -0400
+
+    make: whitespace management
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 1fd9d492985277a4bb6c2cc8f6648c736f43bb43
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 16:18:33 2010 -0400
+
+    luit.man: remove trailing whitespace
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 63dcabebc4b1e2cf69d3bc8efdf250925581a159
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 13:09:47 2010 -0400
+
+    config: upgrade to util-macros 1.8 for additional man page support
+    
+    Use MAN_SUBST now supplied in XORG_MANPAGE_SECTIONS
+    The value of MAN_SUBST is the same for all X.Org packages.
+    
+    Use AC_PROG_SED now supplied by XORG_DEFAULT_OPTIONS
+    Use the appropriate platform version of sed
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 04ceef3da7e3cfb62bb946fb13980394bf37dbaf
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 13:38:26 2010 -0400
+
+    man: replace hardcoded (7) with __miscmansuffix__
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 889bd7922faa4aa92769e4a06048bf83b867a52b
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 13:32:06 2010 -0400
+
+    man: replacement string should be __appmansuffix__
+    
+    To match XORG_MANPAGE_SECTIONS macro expectations.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 1e6ce149a24e453c1e5af2d39721a2a79d078d7d
+Author: Gaetan Nadon <memsize@videotron.ca>
+Date:   Fri Aug 20 13:27:54 2010 -0400
+
+    man: replacement string should be __locale_alias__
+    
+    To match the luit.man expectations.
+    
+    Signed-off-by: Gaetan Nadon <memsize@videotron.ca>
+
+commit 6b7f25cdbd0f80a0f88d72c66aa51d75cd38b906
+Author: Alan Coopersmith <alan.coopersmith@oracle.com>
+Date:   Thu Jul 1 00:24:55 2010 -0700
+
+    Warn if configure does not find Xlib, but don't link against it.
+    
+    luit doesn't #include any Xlib headers or call any Xlib functions,
+    just attempts to read Xlib's locale.aliases files if it can find it.
+    
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit 466e7769a450550d68b3aea5f4f4edbdc31f8bba
+Author: Jeremy Huddleston <jeremyhu@apple.com>
+Date:   Thu Jul 1 09:36:30 2010 -0700
+
+    Whitespace cleanup from Thomas Dickey's luit-20100601 fork
+    
+    Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+
+commit fddfe30c3ff91c83d0484b136e7673764e555555
+Author: Jeremy Huddleston <jeremyhu@apple.com>
+Date:   Thu Jul 1 09:35:39 2010 -0700
+
+    Integrate changes from Thomas Dickey's luit-20100601 fork
+    
+        * add -alias option to allow override of locale.alias pathname.
+        * improve fix waitForInput as suggested in Freedesktop #26383.
+        * fix warnings from clang --analyze
+    
+    Signed-off-by: Jeremy Huddleston <jeremyhu@apple.com>
+
 commit 3b2bbab48945e9dd8563f4ae047436c138e41789
 Author: Julien Cristau <jcristau@debian.org>
 Date:   Wed Feb 10 01:49:18 2010 +0100

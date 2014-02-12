@@ -1,4 +1,3 @@
-/* $Xorg: dsimple.c,v 1.4 2001/02/09 02:05:54 xorgcvs Exp $ */
 /*
 
 Copyright 1993, 1998  The Open Group
@@ -26,7 +25,6 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
-/* $XFree86: xc/programs/xlsfonts/dsimple.c,v 3.6 2001/12/14 20:02:09 dawes Exp $ */
 
 #include <X11/Xos.h>
 #include <X11/Xlib.h>
@@ -59,30 +57,6 @@ from The Open Group.
 char    *program_name = "unknown_program";
 Display *dpy = NULL;
 int      screen = 0;
-
-/*
- * Malloc: like malloc but handles out of memory using Fatal_Error.
- */
-char *Malloc(unsigned size)
-{
-	char *data;
-
-	if (!(data = malloc(size)))
-	  Fatal_Error("Out of memory!");
-
-	return(data);
-}
-
-/*
- * Realloc: like realloc but handles out of memory using Fatal_Error:
- */
-char *Realloc(char *mem, unsigned size)
-{
-    if (!(mem = realloc (mem, size)))
-	Fatal_Error("Out of memory!");
-
-    return mem;
-}
 
 /*
  * Get_Display_Name (argc, argv) Look for -display, -d, or host:dpy (obselete)

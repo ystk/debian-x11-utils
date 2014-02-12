@@ -1,6 +1,6 @@
-# 
+#
 #  Copyright 2005  Red Hat, Inc.
-# 
+#
 #  Permission to use, copy, modify, distribute, and sell this software and its
 #  documentation for any purpose is hereby granted without fee, provided that
 #  the above copyright notice appear in all copies and that both that
@@ -10,7 +10,7 @@
 #  specific, written prior permission.  Red Hat makes no
 #  representations about the suitability of this software for any purpose.  It
 #  is provided "as is" without express or implied warranty.
-# 
+#
 #  RED HAT DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
 #  INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
 #  EVENT SHALL RED HAT BE LIABLE FOR ANY SPECIAL, INDIRECT OR
@@ -19,9 +19,11 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
+SUBDIRS = man
 bin_PROGRAMS = xfd
 
-xfd_CFLAGS = $(XFD_CFLAGS) -DXRENDER -D_BSD_SOURCE
+AM_CPPFLAGS = -DXRENDER -D_BSD_SOURCE -DLOCALEDIR=\"$(LOCALEDIR)\"
+AM_CFLAGS = $(XFD_CFLAGS) $(CWARNFLAGS)
 xfd_LDADD = $(XFD_LIBS)
 
 xfd_SOURCES =	\
@@ -30,55 +32,31 @@ xfd_SOURCES =	\
         gridP.h \
         xfd.c
 
-appman_PRE = \
-        xfd.man
-
-# App default files  (*.ad)
+# App default files
+DISTCHECK_CONFIGURE_FLAGS = --with-appdefaultdir=\$${datadir}/X11/app-defaults
 
 appdefaultdir = @appdefaultdir@
 
-APPDEFAULTFILES = \
-        Xfd
+dist_appdefault_DATA = \
+        app-defaults/Xfd
 
-SUFFIXES = .ad
+MAINTAINERCLEANFILES = ChangeLog INSTALL
 
-.ad:
-	cp $< $@
+.PHONY: ChangeLog INSTALL
 
-appdefault_DATA = $(APPDEFAULTFILES)
+INSTALL:
+	$(INSTALL_CMD)
 
-EXTRA_DIST = $(APPDEFAULTFILES:%=%.ad)
+ChangeLog:
+	$(CHANGELOG_CMD)
 
-CLEANFILES = $(APPDEFAULTFILES)
+dist-hook: ChangeLog INSTALL
 
+if USE_GETTEXT
+noinst_DATA = xfd.po
 
-appmandir = $(APP_MAN_DIR)
+xfd.po: $(xfd_SOURCES:%=$(srcdir)/%)
+	$(AM_V_GEN)xgettext -d xfd -n $(xfd_SOURCES:%=$(srcdir)/%)
 
-appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
-
-EXTRA_DIST += $(appman_PRE)
-CLEANFILES += $(appman_DATA)
-
-SED = sed
-
-# Strings to replace in man pages
-XORGRELSTRING = @PACKAGE_STRING@
-  XORGMANNAME = X Version 11
-
-MAN_SUBSTS = \
-	-e 's|__vendorversion__|"$(XORGRELSTRING)" "$(XORGMANNAME)"|' \
-	-e 's|__xorgversion__|"$(XORGRELSTRING)" "$(XORGMANNAME)"|' \
-	-e 's|__xservername__|Xorg|g' \
-	-e 's|__xconfigfile__|xorg.conf|g' \
-	-e 's|__projectroot__|$(prefix)|g' \
-	-e 's|__apploaddir__|$(appdefaultdir)|' \
-	-e 's|__appmansuffix__|$(APP_MAN_SUFFIX)|g' \
-	-e 's|__libmansuffix__|$(LIB_MAN_SUFFIX)|g' \
-	-e 's|__adminmansuffix__|$(ADMIN_MAN_SUFFIX)|g' \
-	-e 's|__miscmansuffix__|$(MISC_MAN_SUFFIX)|g' \
-	-e 's|__filemansuffix__|$(FILE_MAN_SUFFIX)|g'
-
-SUFFIXES += .$(APP_MAN_SUFFIX) .man
-
-.man.$(APP_MAN_SUFFIX):
-	sed $(MAN_SUBSTS) < $< > $@
+CLEANFILES = xfd.po
+endif

@@ -1,4 +1,3 @@
-/* $Xorg: dsimple.h,v 1.4 2001/02/09 02:05:54 xorgcvs Exp $ */
 /*
 
 Copyright 1993, 1998  The Open Group
@@ -26,7 +25,6 @@ other dealings in this Software without prior written authorization
 from The Open Group.
 
 */
-/* $XFree86: xc/programs/xlsfonts/dsimple.h,v 1.8 2002/12/24 17:43:01 tsi Exp $ */
 
 /*
  * Just_display.h: This file contains the definitions needed to use the
@@ -38,6 +36,8 @@ from The Open Group.
  *
  * Send bugs, etc. to chariot@athena.mit.edu.
  */
+
+#include <X11/Xfuncproto.h>
 
     /* Simple helper macros */
 #ifndef MAX
@@ -58,8 +58,6 @@ extern int screen;                           /* The current screen */
 
     /* Declarations for functions in just_display.c */
 
-char *Malloc(unsigned);
-char *Realloc(char *,unsigned);
 char *Get_Display_Name(int *, char **);
 Display *Open_Display(const char *);
 void Setup_Display_And_Screen(int *, char **);
@@ -81,8 +79,5 @@ void usage(void);
 
 Window Select_Window(Display *, int descend);
 Window Window_With_Name(Display *, Window, const char *);
-#ifdef __GNUC__
-void Fatal_Error(char *, ...) __attribute__((__noreturn__));
-#else
-void Fatal_Error(char *, ...);
-#endif
+
+void Fatal_Error(char *, ...) _X_NORETURN;
