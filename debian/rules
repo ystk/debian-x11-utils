@@ -18,12 +18,6 @@ DEF_SUBDIRS=appres editres listres luit viewres xdpyinfo xdriinfo xev xfd xfonts
 SUBDIRS=$(DEF_SUBDIRS)
 BUILD_STAMPS = $(addprefix $(STAMP_DIR)/build-,$(SUBDIRS))
 
-CFLAGS = -Wall -g
-ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
@@ -45,18 +39,23 @@ build-stamp: $(BUILD_STAMPS)
 
 $(STAMP_DIR)/build-%: $(STAMP_DIR)/genscripts $(STAMP_DIR)/patch
 	dh_testdir
+	cp -a /usr/share/misc/config.guess /usr/share/misc/config.sub $*/
 	mkdir -p $*-build
 	cd $*-build && \
-	../$*/configure --prefix=/usr --mandir=\$${prefix}/share/man \
-	                --infodir=\$${prefix}/share/info $(confflags) \
-	                --disable-selective-werror CFLAGS="$(CFLAGS)"
+	../$*/configure \
+	    --prefix=/usr \
+	    --mandir=\$${prefix}/share/man \
+	    --infodir=\$${prefix}/share/info \
+	    $(confflags) \
+	    --disable-selective-werror \
+	    $(shell DEB_CFLAGS_MAINT_APPEND=-Wall dpkg-buildflags --export=configure)
 	cd $*-build && $(MAKE)
 	>$@
 
 clean: xsfclean
 	dh_testdir
 	rm -f build-stamp
-	rm -f config.cache config.log config.status
+	rm -f */config.guess */config.sub
 	rm -f */config.cache */config.log */config.status
 	rm -f conftest* */conftest*
 	rm -rf autom4te.cache */autom4te.cache
@@ -66,7 +65,7 @@ clean: xsfclean
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	for FILE in $(SUBDIRS); do \
@@ -80,7 +79,7 @@ binary-arch: build install
 	dh_testroot
 
 	dh_installdocs
-	dh_install --sourcedir=debian/tmp --fail-missing
+	dh_install --fail-missing
 	dh_installmenu
 	dh_installchangelogs
 	dh_link

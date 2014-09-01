@@ -1,0 +1,61 @@
+Fix build error with -Werror=format-security
+
+geometry.c: In function '_FindWidget':
+geometry.c:66:5: error: format not a string literal and no format arguments [-Werror=format-security]
+     sprintf(msg, res_labels[14]);
+     ^
+geometry.c: In function 'DisplayChild':
+geometry.c:106:2: error: format not a string literal and no format arguments [-Werror=format-security]
+  sprintf(msg, res_labels[13]);
+  ^
+cc1: some warnings being treated as errors
+
+
+diff --git a/editres/geometry.c b/editres/geometry.c
+index 8f3adea..01111a2 100644
+--- a/editres/geometry.c
++++ b/editres/geometry.c
+@@ -63,7 +63,7 @@ _FindWidget(Widget w)
+     Window win;
+     int x, y;			/* location of event in root coordinates. */
+ 
+-    sprintf(msg, res_labels[14]);
++    sprintf(msg, "%s", res_labels[14]);
+ 
+     SetMessage(global_screen_data.info_label, msg);
+ 
+@@ -103,7 +103,7 @@ DisplayChild(Event *event)
+ 		    find_event->widgets.num_widgets);
+ 
+     if (node == NULL) {
+-	sprintf(msg, res_labels[13]);
++	sprintf(msg, "%s", res_labels[13]);
+ 	SetMessage(global_screen_data.info_label, msg);
+ 	return;	
+     }
+diff --git a/editres/svpopup.c b/editres/svpopup.c
+index 8e3fe8f..d11f9f6 100644
+--- a/editres/svpopup.c
++++ b/editres/svpopup.c
+@@ -127,7 +127,7 @@ ModifySVEntry(Widget w, XEvent *event, String *params, Cardinal *num_params)
+ 	old = global_screen_data.res_text;
+ 	break;
+     default:
+-	sprintf(msg, res_labels[22]);
++	sprintf(msg, "%s", res_labels[22]);
+ 	SetMessage(global_screen_data.info_label, msg);
+ 	return;
+     }
+diff --git a/editres/utils.c b/editres/utils.c
+index 73d7534..18820d1 100644
+--- a/editres/utils.c
++++ b/editres/utils.c
+@@ -518,7 +518,7 @@ HandleGetResources(Event *event)
+ 			get_event->info[i].widgets.num_widgets);
+ 
+ 	if (node == NULL) {
+-	    sprintf(buf, res_labels[16]);
++	    sprintf(buf, "%s", res_labels[16]);
+ 	    AddString(&errors, buf); 
+ 	    continue;	
+ 	}

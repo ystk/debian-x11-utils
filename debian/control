@@ -2,9 +2,10 @@ Source: x11-utils
 Section: x11
 Priority: optional
 Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
-Uploaders: Cyril Brulebois <kibi@debian.org>
 Build-Depends:
- debhelper (>= 5.0.0),
+ dpkg-dev (>= 1.16.1),
+ debhelper (>= 7),
+ autotools-dev,
  xutils-dev (>= 1:7.5+4),
  pkg-config,
  libx11-dev (>= 2:1.0.0),
@@ -23,7 +24,7 @@ Build-Depends:
  x11proto-gl-dev,
  libgl1-mesa-dev,
  quilt,
- x11proto-core-dev (>= 7.0.17),
+ x11proto-core-dev (>= 7.0.22),
  x11proto-input-dev (>= 1.4),
  libxinerama-dev (>= 1:1.0.1),
  libfontenc-dev,
